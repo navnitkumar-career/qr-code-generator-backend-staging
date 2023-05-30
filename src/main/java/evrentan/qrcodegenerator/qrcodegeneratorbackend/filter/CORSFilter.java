@@ -1,5 +1,6 @@
 package evrentan.qrcodegenerator.qrcodegeneratorbackend.filter;
 
+import io.github.pixee.security.Newlines;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,13 +35,13 @@ public class CORSFilter implements Filter {
     HttpServletRequest request = (HttpServletRequest) servletRequest;
     HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, String.join(",", HttpMethod.POST.name(), HttpMethod.GET.name(), HttpMethod.PUT.name(), HttpMethod.PATCH.name(), HttpMethod.DELETE.name(), HttpMethod.OPTIONS.name()));
-    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, String.join(",", HttpHeaders.AUTHORIZATION, HttpHeaders.ORIGIN, HttpHeaders.ACCEPT, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS));
+    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, Newlines.stripAll(String.join(",", HttpMethod.POST.name(), HttpMethod.GET.name(), HttpMethod.PUT.name(), HttpMethod.PATCH.name(), HttpMethod.DELETE.name(), HttpMethod.OPTIONS.name())));
+    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, Newlines.stripAll(String.join(",", HttpHeaders.AUTHORIZATION, HttpHeaders.ORIGIN, HttpHeaders.ACCEPT, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS)));
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
     final String origin = request.getHeader(HttpHeaders.ORIGIN);
     if (Objects.nonNull(origin))
-      response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
+      response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, Newlines.stripAll(origin));
 
     if (request.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS.name())) {
       response.getWriter().print(HttpStatus.OK.name());
